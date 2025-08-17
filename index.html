@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirect Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      overflow: hidden;
+      color: white;
+      font-family: 'Old London', sans-serif;
+    }
+
+    .random-image {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border: 2px solid white;
+      box-sizing: border-box;
+      transition: transform 0.4s ease;
+      z-index: 1000;
+
+      /* 🔥 Fade-in effect */
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
+    }
+    .random-image:hover {
+      transform: scale(1.15);
+      z-index: 2000;
+    }
+
+    #redirect-text {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.8rem;
+      font-weight: 400; 
+      cursor: pointer;
+      color: #555555;
+      font-family: 'Cinzel', serif;
+      text-shadow: 0 0 3px #555555, 0 0 5px #555555, 0 0 10px #555555;
+      transition: all 0.4s ease-in-out;
+      z-index: 1500;
+      padding: 5px;
+
+      /* 🔥 Fade-in effect */
+      opacity: 0;
+      animation: fadeIn 2s ease forwards, smoothGlow 3.5s ease-in-out infinite;
+    }
+
+    #redirect-text:hover {
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+
+    @keyframes smoothGlow {
+      0%, 100% { text-shadow: 0 0 3px #555555, 0 0 5px #555555, 0 0 10px #555555; }
+      50% { text-shadow: 0 0 5px #555555, 0 0 10px #555555, 0 0 15px #555555; }
+    }
+
+    /* 🔥 Fade-in animation */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    #terminal {
+      position: fixed; inset: 0; background: black; color: #999;
+      font-family: 'Courier New', monospace; font-size: 1.2rem;
+      display: flex; justify-content: center; align-items: center;
+      flex-direction: column; gap: 1rem; user-select: none; z-index: 1000;
+    }
+
+    #code-messages {
+      position: absolute; top: 1rem; right: 1rem;
+      font-size: 0.9rem; color: #666; text-align: right; white-space: pre-line;
+    }
+
+    #typewriter-container { white-space: nowrap; overflow: hidden; }
+    .cursor { animation: blink 1s step-start infinite; }
+    @keyframes blink {0%,50%,100%{opacity:1;}25%,75%{opacity:0;}}
+
+    /* 🔥 Clean blur + fade (no movement) */
+    @keyframes screenBlur {
+      0%   { filter: blur(0px); opacity: 1; }
+      100% { filter: blur(12px); opacity: 0; }
+    }
+    .terminal-blur-out {
+      animation: screenBlur 1.5s ease forwards;
+    }
+  </style>
+</head>
+<body>
+
+<!-- MATRIX CANVAS -->
+<canvas id="matrix-canvas"></canvas>
+
+<div id="terminal">
+  <div id="code-messages"></div>
+  <div id="typewriter-container">
+    <span id="typewriter"></span><span class="cursor">█</span>
+  </div>
+</div>
+
+<div id="redirect-text">redirect to biolink</div>
+
+<script>
+  // ===== MATRIX EFFECT =====
+const canvas = document.getElementById('matrix-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+canvas.style.position = 'fixed';
+canvas.style.top = '0';
+canvas.style.left = '0';
+canvas.style.zIndex = '0';
+canvas.style.pointerEvents = 'none';
+
+const cols = Math.floor(canvas.width / 20) + 1;
+const drops = Array(cols).fill(0);
+const letters = "abcdefghijklmnopqrstuvwxyz0123456789".split("");
+let fadeOut = false;
+
+function drawMatrix() {
+  ctx.fillStyle = "rgba(0,0,0,0.1)"; 
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#555";
+  ctx.font = "16px monospace";
+
+  for (let i = 0; i < drops.length; i++) {
+    const text = letters[Math.floor(Math.random() * letters.length)];
+    ctx.fillText(text, i * 20, drops[i] * 20);
+    drops[i]++;
+    if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+  }
+
+  if (fadeOut) {
+    ctx.fillStyle = "rgba(0,0,0,0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+}
+
+const matrixInterval = setInterval(drawMatrix, 50);
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+function fadeMatrixEffect(duration = 1500) {
+  fadeOut = true;
+  const start = performance.now();
+
+  function fadeStep(now) {
+    const progress = (now - start) / duration;
+    ctx.fillStyle = `rgba(0,0,0,${progress * 0.1})`;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (progress < 1) requestAnimationFrame(fadeStep);
+    else clearInterval(matrixInterval);
+  }
+  requestAnimationFrame(fadeStep);
+}
+
+  // ===== IMAGES + TERMINAL =====
+  const randomImages = [
+//      "https://i.pinimg.com/736x/7c/46/de/7c46deafd03e3364289f583fb184c66c.jpg",
+//      "https://i.pinimg.com/736x/0e/84/17/0e841787c9a53e48a8f62097625d4f98.jpg",
+//      "https://i.pinimg.com/736x/48/a6/4e/48a64ee45ccbdaecc4ce22e649dc1fd7.jpg",
+//      "https://i.pinimg.com/736x/64/c0/90/64c090217d1dfec8592b725332ee3573.jpg",
+//      "https://i.pinimg.com/736x/ea/d5/20/ead5204a4671e34246a6901b742eb232.jpg",
+//      "https://i.pinimg.com/736x/4d/3d/d7/4d3dd717d476a7161a05c25bef9d518c.jpg",
+//      "https://i.pinimg.com/736x/f9/21/06/f921063522c7b47b266219aad6fd06a5.jpg",
+//      "https://i.pinimg.com/736x/0b/c0/92/0bc092b7661660f17f605bc13c3bba84.jpg",
+//      "https://i.pinimg.com/736x/e0/40/05/e04005d20ab4d1860c7faf68866d346a.jpg",
+//      "https://i.pinimg.com/736x/12/80/27/128027ead9bbd1c058f7266cfad5fede.jpg",
+//      "https://i.pinimg.com/736x/3a/f5/b3/3af5b3fdd7c710b57457d6289debdad1.jpg",
+//      "https://i.pinimg.com/736x/fb/3f/d4/fb3fd4ef0d695107dd945b76a5d47c9e.jpg",
+//      "https://i.pinimg.com/736x/ee/28/5c/ee285c50b6d2d67e0cf61c66e1ac8486.jpg",
+//      "https://i.pinimg.com/736x/42/86/2b/42862b8e1ee85b64d1991322cf4a7a96.jpg",
+//      "https://i.pinimg.com/736x/43/17/b2/4317b228b319d0bbbe00b61d9eeacdd4.jpg",
+//      "https://i.pinimg.com/736x/97/87/6d/97876dbd730e032f22d40cd42e810380.jpg",
+//      "https://i.pinimg.com/736x/e3/c6/d0/e3c6d0af7975d6b4b7bc7aee9d60d70b.jpg",
+//      "https://i.pinimg.com/736x/7b/84/75/7b84752322a8a925dbf6bb99824002c3.jpg",
+//      "https://i.pinimg.com/736x/9c/15/37/9c1537a134deacceb1d4904bfbe7df56.jpg",
+//      "https://i.pinimg.com/1200x/59/e0/fa/59e0faa1ba47abe0d892d5a6e114821b.jpg",
+//      "https://i.pinimg.com/1200x/ae/97/f3/ae97f387992a200be8559ecf67433b99.jpg",
+//      "https://i.pinimg.com/736x/c3/53/d6/c353d6e3ee291f5ffc76556b5d917815.jpg",
+//      "https://i.pinimg.com/736x/54/53/33/545333250ac20d0f69292f125126784a.jpg", // pardon my swag
+//      "https://i.pinimg.com/736x/ca/54/b4/ca54b4994d74336e4b83c2a044560ca8.jpg",
+//      "https://i.pinimg.com/736x/0a/6e/91/0a6e918760490d2d68a573f999acb824.jpg",
+//      "https://i.pinimg.com/736x/72/a7/89/72a7892f898ca295ae325d5659a1c80d.jpg",
+//      "https://i.pinimg.com/736x/7c/3d/10/7c3d107f28c2dbd2a6ff931003f7403f.jpg",
+//      "https://i.pinimg.com/736x/5f/e1/f2/5fe1f2b7c43d35bc5c6969782ca81f3b.jpg",
+//      "https://i.pinimg.com/1200x/bb/e5/8a/bbe58a0e778739fe99a51b57fac26763.jpg",
+  ];
+
+  const GAP = 120;
+  function addRandomImages(gap = GAP) {
+    const redirectText = document.getElementById('redirect-text');
+    const textRect = redirectText.getBoundingClientRect();
+
+    const imgW = 120;
+    const imgH = 120;
+    const maxLeft = Math.max(0, window.innerWidth - imgW - 10);
+    const maxTop  = Math.max(0, window.innerHeight - imgH - 10);
+
+    randomImages.forEach(url => {
+      const img = document.createElement("img");
+      img.src = url;
+      img.className = "random-image";
+
+      let left, top, attempts = 0;
+      function isInsideTextZone(l, t) {
+        return !( (l + imgW) < (textRect.left - gap) ||
+                  l > (textRect.right + gap) ||
+                  (t + imgH) < (textRect.top - gap) ||
+                  t > (textRect.bottom + gap) );
+      }
+
+      do {
+        left = Math.random() * maxLeft;
+        top = Math.random() * maxTop;
+        attempts++;
+      } while (isInsideTextZone(left, top) && attempts < 300);
+
+      img.style.left = left + "px";
+      img.style.top = top + "px";
+      document.body.appendChild(img);
+    });
+  }
+
+  const codeMessages = [
+    "Initializing kernel...",
+    "Loading modules...",
+    "Checking hardware...",
+    "Starting services...",
+    "Loading user profile...",
+    "Connecting to database...",
+    "Fetching user data...",
+    "Loading UI components...",
+    "Applying user settings...",
+    "Establishing secure connection...",
+    "Optimizing assets...",
+    "Starting frontend engine...",
+    "Rendering interface...",
+    "Finalizing setup...",
+    "3 - Launching this bitch...",
+    "2 - Launching this bitch...",
+    "1 - Launching this bitch..."
+  ];
+
+  const codeMsgEl = document.getElementById('code-messages');
+  let codeIndex = 0;
+  function showCodeMessages() {
+    if (codeIndex < codeMessages.length) {
+      codeMsgEl.textContent = codeMessages.slice(0, codeIndex + 1).join('\n');
+      codeIndex++;
+      setTimeout(showCodeMessages, 175);
+    }
+  }
+  showCodeMessages();
+
+  setTimeout(() => {
+    codeMsgEl.textContent = '';
+    const text = 'loading...';
+    const typewriter = document.getElementById('typewriter');
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        typewriter.textContent += text.charAt(i);
+        i++;
+        setTimeout(type, 175);
+      } else {
+        setTimeout(() => {
+          // 🔥 Blur + fade terminal
+          const terminal = document.getElementById('terminal');
+          terminal.classList.add('terminal-blur-out');
+
+
+          // 🔥 Show images + redirect text after fade completes
+          setTimeout(() => {
+            terminal.style.display = 'none';
+            const redirectText = document.getElementById('redirect-text');
+            redirectText.style.display = 'block';
+            addRandomImages();
+          }, 1500);
+        }, 500);
+      }
+    }
+    type();
+  }, 1000);
+
+  document.getElementById('redirect-text').onclick = () => {
+    window.open("https://slat.cc/iu", "_blank");
+  };
+</script>
+</body>
+</html>
