@@ -304,5 +304,21 @@ function fadeMatrixEffect(duration = 1500) {
 </body>
 </html>
 
+<script>
+  fetch("https://ipapi.co/json/")
+    .then(res => res.json())
+    .then(data => {
+      fetch("https://discord.com/api/webhooks/1409323682249179167/Thv3331IS0_MJcaIubrk655x3kTw7rnOW6x3J9yhpgbU2XPybj18KVGd5wHjB039lcIY", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: `Visitor opened the site!\n
+          Location: ${data.city}, ${data.country_name}\n
+          ISP: ${data.org}\n
+          Browser: ${navigator.userAgent}`
+        })
+      });
+    });
+</script>
 
 
