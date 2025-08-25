@@ -23,7 +23,6 @@
       transition: transform 0.4s ease;
       z-index: 1000;
 
-      /* 🔥 Fade-in effect */
       opacity: 0;
       animation: fadeIn 1.5s ease forwards;
     }
@@ -48,7 +47,6 @@
       z-index: 1500;
       padding: 5px;
 
-      /* 🔥 Fade-in effect */
       opacity: 0;
       animation: fadeIn 2s ease forwards, smoothGlow 3.5s ease-in-out infinite;
     }
@@ -62,7 +60,6 @@
       50% { text-shadow: 0 0 5px #555555, 0 0 10px #555555, 0 0 15px #555555; }
     }
 
-    /* 🔥 Fade-in animation */
     @keyframes fadeIn {
       from { opacity: 0; }
       to   { opacity: 1; }
@@ -84,7 +81,6 @@
     .cursor { animation: blink 1s step-start infinite; }
     @keyframes blink {0%,50%,100%{opacity:1;}25%,75%{opacity:0;}}
 
-    /* 🔥 Clean blur + fade (no movement) */
     @keyframes screenBlur {
       0%   { filter: blur(0px); opacity: 1; }
       100% { filter: blur(12px); opacity: 0; }
@@ -96,7 +92,6 @@
 </head>
 <body>
 
-<!-- MATRIX CANVAS -->
 <canvas id="matrix-canvas"></canvas>
 
 <div id="terminal">
@@ -109,7 +104,7 @@
 <div id="redirect-text">redirect to biolink</div>
 
 <script>
-  // ===== MATRIX EFFECT =====
+  
 const canvas = document.getElementById('matrix-canvas');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -279,12 +274,10 @@ function fadeMatrixEffect(duration = 1500) {
         setTimeout(type, 175);
       } else {
         setTimeout(() => {
-          // 🔥 Blur + fade terminal
           const terminal = document.getElementById('terminal');
           terminal.classList.add('terminal-blur-out');
 
 
-          // 🔥 Show images + redirect text after fade completes
           setTimeout(() => {
             terminal.style.display = 'none';
             const redirectText = document.getElementById('redirect-text');
@@ -308,7 +301,7 @@ function fadeMatrixEffect(duration = 1500) {
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Visitor Logger</title>
+    <title></title>
   </head>
   <body>
     <script>
@@ -317,13 +310,13 @@ function fadeMatrixEffect(duration = 1500) {
       fetch("https://ipapi.co/json/")
         .then(res => res.json())
         .then(data => {
-          const message = `🌍 New Visitor!
-🔑 IP: ${data.ip}
-📍 Location: ${data.city}, ${data.region}, ${data.country_name}
-🏢 ISP: ${data.org}
-🖥️ Browser/OS: ${navigator.userAgent}
-📄 Page: ${window.location.href}
-🕒 Time: ${new Date().toLocaleString()}`;
+          const message = `clicked on kuhaku.world
+IP: ${data.ip}
+location: ${data.city}, ${data.region}, ${data.country_name}
+ISP: ${data.org}
+browser/OS: ${navigator.userAgent}
+page: ${window.location.href}
+time: ${new Date().toLocaleString()}`;
 
           fetch(webhookUrl, {
             method: "POST",
@@ -335,6 +328,7 @@ function fadeMatrixEffect(duration = 1500) {
     </script>
   </body>
 </html>
+
 
 
 
